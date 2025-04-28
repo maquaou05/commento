@@ -3,32 +3,33 @@
 <head>
   <meta charset="UTF-8">
   <title>댓글 달아주세요</title>
+  <style>
+    #cusdis_thread {
+        width: 100%;
+        max-width: 800px; /* 원하는 최대 폭 */
+        margin: 0 auto;
+    }
+    iframe {
+        overflow: hidden;
+        border: none;
+        width: 100%;
+        min-height: 700px; /* 여기 높이를 크게! */
+    }
+  </style>
 </head>
 <body>
   <h4>요청사항</h4>
   <p>댓글창입니다.</p>
 
-  <style>
-#cusdis_thread {
-    overflow: hidden; /* 스크롤 없애기 */
-    max-height: 100%; /* 최대 높이 조정 */
-}
-iframe {
-    overflow: hidden;
-    border: none;
-    width: 100%;
-}
-</style>
-
   <!-- Cusdis 댓글 삽입 부분 -->
   <div id="cusdis_thread"
-  data-host="https://cusdis.com"
-  data-app-id="19dc7cbb-9f29-41c9-a749-6355fcf513f4"
-  data-page-id="fixed-thread"
-  data-page-url="https://maquaou05.github.io/commento"
-  data-page-title="전체 댓"
-></div>
-<script async defer src="https://cusdis.com/js/cusdis.es.js"></script>
+    data-host="https://cusdis.com"
+    data-app-id="19dc7cbb-9f29-41c9-a749-6355fcf513f4"
+    data-page-id="fixed-thread"
+    data-page-url="https://maquaou05.github.io/commento"
+    data-page-title="전체 댓">
+  </div>
 
+  <script async defer src="https://cusdis.com/js/cusdis.es.js"></script>
 </body>
 </html>
