@@ -11,12 +11,14 @@
 
   #commentInput {
     width: 100%;
-    height: 80px;
-    font-size: 16px;
-    padding: 10px;
+    height: 100px;
+    font-size: 18px;
+    padding: 14px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    resize: vertical;
     box-sizing: border-box;
-    margin-top: 10px;
-  }
+}
 
   button {
     margin-top: 10px;
@@ -34,10 +36,10 @@
 </style>
 
   <meta charset="UTF-8" />
-  <title>댓슬 게시판</title>
+  <title>댓글 게시판</title>
 </head>
 <body>
-  <h5>요청사항</h5>
+  <h3>요청사항</h3>
   <div id="comments"></div>
   <input type="text" id="commentInput" placeholder="댓글을 입력하세요" />
   <button onclick="submitComment()">등록</button>
