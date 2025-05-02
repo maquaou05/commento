@@ -1,37 +1,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="UTF-8" />
-  <title>댓글 게시판</title>
-  <style>
-    body {
-      font-family: sans-serif;
-      max-width: 600px;
-      margin: 2rem auto;
-      padding: 1rem;
-    }
-
-    #commentInput {
-      width: 100%;
-      height: 100px;
-      font-size: 18px;
-      padding: 14px;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      resize: vertical;
-      box-sizing: border-box;
-      margin-top: 10px;
-    }
-
-    button {
-      margin-top: 10px;
-      padding: 10px 20px;
-      font-size: 16px;
-      cursor: pointer;
-      background-color: #007BFF;
-      color: white;
       border: none;
       border-radius: 6px;
+    }
+
+    #submitBtn:hover {
+      color: #555;
     }
 
     #comments p {
@@ -40,20 +15,33 @@
       border-radius: 6px;
       margin-top: 10px;
       font-size: 15px;
+      position: relative;
+    }
+
+    .deleteBtn {
+      position: absolute;
+      right: 10px;
+      top: 10px;
+      background: none;
+      border: none;
+      color: red;
+      cursor: pointer;
+      font-size: 12px;
+    }
+
+    .pagination {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .pagination button {
+      margin: 0 5px;
+      padding: 5px 10px;
+      cursor: pointer;
     }
   </style>
 </head>
 <body>
-  <h5>요청사항</h5>
-  <div id="comments"></div>
-  <input type="text" id="commentInput" placeholder="댓글을 입력하세요" />
-  <button onclick="submitComment()">등록</button>
-
-  <!-- Firebase SDKs -->
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js"></script>
-
-  <script type="module">
     const firebaseConfig = {
       apiKey: "AIzaSyCP-qPyliPqs_eUdm1zJd0SvcR417rX--0",
       authDomain: "teacherboard-6469f.firebaseapp.com",
@@ -68,6 +56,10 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
 
+    const commentsPerPage = 10;
+    let allComments = [];
+    let currentPage = 1;
+
     function submitComment() {
       const input = document.getElementById('commentInput');
       if (input.value.trim() === "") return;
@@ -79,16 +71,58 @@
       input.value = '';
     }
 
-    const commentsDiv = document.getElementById('comments');
-    db.ref('comments').on('child_added', (snapshot) => {
+    function deleteComment(key) {
+      db.ref('comments/' + key).remove();
+    }
+
+    function renderComments(page) {
+      const commentsDiv = document.getElementById('comments');
+      commentsDiv.innerHTML = '';
+      const start = (page - 1) * commentsPerPage;
+      const end = start + commentsPerPage;
+      const commentsToShow = allComments.slice(start, end);
+
+      commentsToShow.forEach(({ key, text }) => {
+        const p = document.createElement('p');
+        p.innerText = text;
+
+        const deleteBtn = document.createElement('button');
+        deleteBtn.innerText = '삭제';
+        deleteBtn.className = 'deleteBtn';
+        deleteBtn.onclick = () => deleteComment(key);
+        p.appendChild(deleteBtn);
+
+        commentsDiv.appendChild(p);
+      });
+
+      renderPagination();
+    }
+
+    function renderPagination() {
+      const paginationDiv = document.getElementById('pagination');
+      paginationDiv.innerHTML = '';
+      const totalPages = Math.ceil(allComments.length / commentsPerPage);
+
+      for (let i = 1; i <= totalPages; i++) {
+        const btn = document.createElement('button');
+        btn.innerText = i;
+        btn.onclick = () => {
+          currentPage = i;
+          renderComments(currentPage);
+        };
+        paginationDiv.appendChild(btn);
+      }
+    }
+
+    db.ref('comments').on('value', (snapshot) => {
       const data = snapshot.val();
-      const p = document.createElement('p');
-      p.innerText = data.text;
-      commentsDiv.appendChild(p);
+      allComments = [];
+      for (const key in data) {
+        allComments.push({ key, text: data[key].text });
+      }
+      allComments.reverse();
+      renderComments(currentPage);
     });
   </script>
 </body>
 </html>
-
-
-
