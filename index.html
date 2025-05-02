@@ -1,8 +1,37 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <meta charset="UTF-8" />
+  <title>댓슬 게시판</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      max-width: 600px;
+      margin: 2rem auto;
+      padding: 1rem;
+    }
+
+    h3 {
+      text-align: center;
+    }
+
+    #commentInput {
+      width: 100%;
+      height: 80px;
+      font-size: 16px;
+      padding: 10px;
+      box-sizing: border-box;
+      margin-top: 10px;
+    }
+
+    #submitBtn {
+      color: #007bff;
+      background: none;
       border: none;
-      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+      float: right;
+      margin-top: 10px;
     }
 
     #submitBtn:hover {
@@ -42,6 +71,17 @@
   </style>
 </head>
 <body>
+  <h3>요청사항</h3>
+  <div id="comments"></div>
+  <input type="text" id="commentInput" placeholder="댓글을 입력하세요" />
+  <button id="submitBtn" onclick="submitComment()">등록</button>
+  <div class="pagination" id="pagination"></div>
+
+  <!-- Firebase SDKs (Realtime Database Only) -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js"></script>
+
+  <script>
     const firebaseConfig = {
       apiKey: "AIzaSyCP-qPyliPqs_eUdm1zJd0SvcR417rX--0",
       authDomain: "teacherboard-6469f.firebaseapp.com",
@@ -53,6 +93,7 @@
       measurementId: "G-SXYPY2XFH9"
     };
 
+    // Firebase 초기화
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
 
@@ -126,3 +167,4 @@
   </script>
 </body>
 </html>
+
